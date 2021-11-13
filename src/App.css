@@ -1,0 +1,32 @@
+#RadioGroup {
+  display: "inline-block";
+  position: absolute;
+  top: 0px;
+  left: calc(50% - 100px);
+  width: 200px;
+  height: 30px;
+}
+
+#ButtonGtroup {
+  position: absolute;
+  top: calc(50% - 100px);
+  left: calc(100% - 100px);
+  transform: translate(0%, 0);
+  width: 100px;
+  height: 30px;
+  align-self: center;
+  font-family: Tahoma, Arial, Helvetica, "宋体";
+  font-size: 8px;
+}
+
+#TexInformation {
+  position: absolute;
+  top: calc(100% - 100px);
+  left: 5%;
+  width: calc(90%);
+  height: 30px;
+  font-family: Tahoma, Arial, Helvetica, "宋体";
+  font-size: 30px;
+  align-content: center;
+  color: rgb(3, 179, 202);
+}

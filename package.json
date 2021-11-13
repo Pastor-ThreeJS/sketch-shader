@@ -1,0 +1,84 @@
+{
+  "name": "sketch-pass-tooltiks",
+  "version": "0.0.0",
+  "repository": "git@github.com:Lustianshun/sketch-pass-tooltiks.git",
+  "author": "lustianshun@gmail.com",
+  "license": "ISC",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@tweenjs/tween.js": "^18.6.4",
+    "axios": "^0.21.1",
+    "dat.gui": "^0.7.7",
+    "echarts": "^4.9.0",
+    "sketch-tooltiks": "0.0.3",
+    "stats-js": "^1.0.1",
+    "three": "^0.131.0",
+    "threejs-glsl-loader": "^1.0.4",
+    "tweenjs": "^1.0.2",
+    "uuid": "^8.3.1",
+    "zsqy-iot-utility": "0.0.6"
+  },
+  "devDependencies": {
+    "@ant-design/icons": "^4.2.2",
+    "@types/d3": "^7.0.0",
+    "@types/dat.gui": "^0.7.7",
+    "@types/echarts": "^4.8.1",
+    "@types/three": "^0.131.0",
+    "@types/uuid": "^8.3.0",
+    "antd": "^4.6.4",
+    "compressing": "^1.5.1",
+    "core-js": "^3.6.5",
+    "cross-env": "^7.0.3",
+    "child_process": "^1.0.2",
+    "fs": "0.0.1-security",
+    "ftp": "^0.3.10",
+    "util": "^0.12.4",
+    "gulp": "^4.0.2",
+    "gulp-bump": "^3.2.0",
+    "xml2js": "^0.4.23",
+    "silly-datetime": "^0.1.2",
+    "http-proxy-middleware": "^1.0.5",
+    "react": "^16.13.1",
+    "react-dnd": "^11.1.3",
+    "react-dnd-html5-backend": "^11.1.3",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.3",
+    "rimraf": "^3.0.2",
+    "styled-components": "^4.4.1",
+    "typescript": "~4.1.5"
+  },
+  "scripts": {
+    "dev": "react-scripts start",
+    "build": "react-scripts build",
+    "package": "gulp clean && tsc -d true -p ./src/lib/ && gulp upgrade_version && npm publish",
+    "gulp:clean": "gulp clean",
+    "gulp:build": "gulp build",
+    "gulp:latest": "gulp latest",
+    "gulp:upload": "gulp upload  && gulp clean",
+    "gulp:download": "gulp download && gulp clean",
+    "gulp:deploy": "gulp deploy",
+    "gulp:ci": "react-scripts build && gulp build && gulp deploy"
+  },
+  "keywords": [
+    "three.js"
+  ],
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
