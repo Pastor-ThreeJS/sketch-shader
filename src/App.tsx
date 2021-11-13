@@ -2,8 +2,10 @@ import React from 'react';
 import * as THREE from 'three';
 import Stats from 'stats-js';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { BuildingSweepingLight, FlowingLine } from "./lib"
+
+import { BuildingSweepingLight, FlowingLine, Fresnel, GeometryMaterial, BaseMaterial, BaseMesh } from "./lib"
 import './App.css';
+import { Material } from 'three';
 
 interface StateProps { }
 interface StaState {
@@ -129,6 +131,10 @@ export default class App extends React.Component<StateProps, StaState> {
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      this.baseMaterialGroup.forEach((material) => {
+        material.Resize();
+      });
     });
 
 
@@ -147,61 +153,95 @@ export default class App extends React.Component<StateProps, StaState> {
   }
 
   Update() {
-    this.flowingLine.Update();
-    this.buildingSweepingLight.Update();
+    this.baseMeshGroup.forEach((mesh) => {
+      mesh.Update();
+    });
+    this.baseMaterialGroup.forEach((material) => {
+      material.Update();
+    });
+
   }
+  baseMeshGroup: BaseMesh[] = [];
+  baseMaterialGroup: BaseMaterial[] = [];
   flowingLine: FlowingLine;
+  geometryMaterial: GeometryMaterial;
   buildingSweepingLight: BuildingSweepingLight;
-
+  fresnel: Fresnel;
   InitModel(scene: THREE.Scene) {
-    let poins = [
-      new THREE.Vector3(0, 0, 10),
-      new THREE.Vector3(10, 0, 10),
-      new THREE.Vector3(10, 0, 0),
-      new THREE.Vector3(20, 0, -10)
-    ]
-    let texrtureUrl = "\\assets\\textures\\arrow.png";
-    this.flowingLine = new FlowingLine(poins, texrtureUrl, 80, 0.1, 40);
-    scene.add(this.flowingLine.mesh);
-
-    this.buildingSweepingLight = new BuildingSweepingLight();
-    for (let i = 0; i < 60; i++) {
-      const height = Math.random() * 10 + 2
-      const width = 3
-      const cubeGeom = new THREE.BoxBufferGeometry(width, height, width)
-      cubeGeom.setAttribute('color', new THREE.BufferAttribute(new Float32Array(24 * 3), 3))
-      const colors = cubeGeom.attributes.color
-      let r = Math.random() * 0.2,
-        g = Math.random() * 0.1,
-        b = Math.random() * 0.8
-      //设置立方体六个面24个顶点的颜色  
-      for (let i = 0; i < 24; i++) {
-        colors.setXYZ(i, r, g, 0.6)
-      }
-      //重置立方体顶部四边形的四个顶点的颜色
-      const k = 2
-      colors.setXYZ(k * 4 + 0, .0, g, 1.0)
-      colors.setXYZ(k * 4 + 1, .0, g, 1.0)
-      colors.setXYZ(k * 4 + 2, .0, g, 1.0)
-      colors.setXYZ(k * 4 + 3, .0, g, 1.0)
-      const cube = new THREE.Mesh(cubeGeom, this.buildingSweepingLight.material)
-      cube.position.set(Math.random() * 100 - 50, height / 2, Math.random() * 100 - 50)
-      scene.add(cube)
-
-      //绘制边框线
-      const lineGeom = new THREE.EdgesGeometry(cubeGeom)
-      const lineMaterial = new THREE.LineBasicMaterial({
-        color: 0x018BF5,
-        linewidth: 1,
-        linecap: 'round',
-        linejoin: 'round'
-      })
-      const line = new THREE.LineSegments(lineGeom, lineMaterial)
-      line.scale.copy(cube.scale)
-      line.rotation.copy(cube.rotation)
-      line.position.copy(cube.position)
-      scene.add(line)
+    {
+      let poins = [
+        new THREE.Vector3(0, 0, 10),
+        new THREE.Vector3(10, 0, 10),
+        new THREE.Vector3(10, 0, 0),
+        new THREE.Vector3(20, 0, -10)
+      ]
+      let texrtureUrl = "\\assets\\textures\\arrow.png";
+      this.flowingLine = new FlowingLine();
+      this.flowingLine.Init({ points: poins, textureUrl: texrtureUrl, tubularSegments: 80, radius: 0.1, repeat: 40 });
+      scene.add(this.flowingLine.mesh);
+      this.baseMeshGroup.push(this.flowingLine);
     }
 
+    {
+      this.buildingSweepingLight = new BuildingSweepingLight();
+      this.buildingSweepingLight.Init();
+      this.baseMaterialGroup.push(this.buildingSweepingLight);
+      for (let i = 0; i < 60; i++) {
+        const height = Math.random() * 10 + 2
+        const width = 3
+        const cubeGeom = new THREE.BoxBufferGeometry(width, height, width)
+        cubeGeom.setAttribute('color', new THREE.BufferAttribute(new Float32Array(24 * 3), 3))
+        const colors = cubeGeom.attributes.color
+        let r = Math.random() * 0.2,
+          g = Math.random() * 0.1,
+          b = Math.random() * 0.8
+        //设置立方体六个面24个顶点的颜色  
+        for (let i = 0; i < 24; i++) {
+          colors.setXYZ(i, r, g, 0.6)
+        }
+        //重置立方体顶部四边形的四个顶点的颜色
+        const k = 2
+        colors.setXYZ(k * 4 + 0, .0, g, 1.0)
+        colors.setXYZ(k * 4 + 1, .0, g, 1.0)
+        colors.setXYZ(k * 4 + 2, .0, g, 1.0)
+        colors.setXYZ(k * 4 + 3, .0, g, 1.0)
+        const cube = new THREE.Mesh(cubeGeom, this.buildingSweepingLight.material)
+        cube.position.set(Math.random() * 100 - 50, height / 2, Math.random() * 100 - 50)
+        scene.add(cube)
+
+        //绘制边框线
+        const lineGeom = new THREE.EdgesGeometry(cubeGeom)
+        const lineMaterial = new THREE.LineBasicMaterial({
+          color: 0x018BF5,
+          linewidth: 1,
+          linecap: 'round',
+          linejoin: 'round'
+        })
+        const line = new THREE.LineSegments(lineGeom, lineMaterial)
+        line.scale.copy(cube.scale)
+        line.rotation.copy(cube.rotation)
+        line.position.copy(cube.position)
+        scene.add(line)
+      }
+    }
+
+    // {
+    //   this.fresnel = new Fresnel();
+    //   this.fresnel.Init();
+    //   this.baseMaterialGroup.push(this.fresnel);
+    //   let geometry = new THREE.BoxGeometry(20, 20, 20);//盒子模型
+    //   let mesh = new THREE.Mesh(geometry, this.fresnel.material);
+    //   scene.add(mesh);
+    // }
+
+    {
+      this.geometryMaterial = new GeometryMaterial();
+      this.geometryMaterial.Init();
+      this.baseMaterialGroup.push(this.geometryMaterial);
+      let geometry = new THREE.PlaneBufferGeometry(2, 2);
+      let mesh = new THREE.Mesh(geometry, this.geometryMaterial.material);
+      mesh.position.y = 0;
+      scene.add(mesh);
+    }
   }
 }
