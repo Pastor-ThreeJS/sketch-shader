@@ -1,4 +1,4 @@
-import { BuildingSweepingLight, FlowingLine, Fresnel, GeometryMaterial, BaseMaterial, BaseMesh, Radar, Wall, Fly } from "./lib"
+import { BuildingSweepingLight, FlowingLine, Fresnel, GeometryMaterial, BaseMaterial, BaseMesh, Radar, Wall, Fly, SurroundLine, ShaderSourceUtils } from "./lib"
 import * as THREE from 'three';
 import Stats from './Stats';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
@@ -127,14 +127,38 @@ export default class World {
             //     this.scene.add(mesh);
             //     this.baseMaterialGroup.push(wall);
             // }
-            {
-                let fly = new Fly();
-                fly.Init();
-                let mesh = fly.GetMesh();
-                mesh.position.set(0, 0, 0);
-                this.scene.add(mesh);
-                this.baseMaterialGroup.push(fly);
-            }
+            // {
+            //     let fly = new Fly();
+            //     fly.Init();
+            //     let mesh = fly.GetMesh();
+            //     mesh.position.set(0, 0, 0);
+            //     this.scene.add(mesh);
+            //     this.baseMaterialGroup.push(fly);
+            // }
+
+            // {
+            //     let object = new SurroundLine();
+            //     object.Init();
+            //     this.baseMaterialGroup.push(object);
+            //     let geometry = new THREE.BoxGeometry(20, 20, 20);
+            //     let mat = new THREE.MeshBasicMaterial();
+            //     let box = new THREE.Mesh(geometry, mat);
+            //     this.scene.add(box);
+            //     let mesh = object.GetMesh(box);
+            //     mesh.position.set(0, 0, 0);
+            //     this.scene.add(mesh);
+            // }
+
+            // {
+            //     let object = new SurroundLine();
+            //     object.Init();
+            //     this.baseMaterialGroup.push(object);
+            //     let geometry = new THREE.BoxGeometry(20, 20, 20);
+            //     let mat = new THREE.MeshBasicMaterial();
+            //     let box = new THREE.Mesh(geometry, mat);
+            //     this.scene.add(box);
+            //     ShaderSourceUtils.Test(mat, new THREE.Color(0, 1, 0))
+            // }
         }
     }
 }
