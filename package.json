@@ -14,13 +14,11 @@
     "axios": "^0.21.1",
     "dat.gui": "^0.7.7",
     "echarts": "^4.9.0",
-    "sketch-tooltiks": "0.0.3",
     "stats-js": "^1.0.1",
     "three": "^0.131.0",
     "threejs-glsl-loader": "^1.0.4",
     "tweenjs": "^1.0.2",
-    "uuid": "^8.3.1",
-    "zsqy-iot-utility": "0.0.6"
+    "uuid": "^8.3.1"
   },
   "devDependencies": {
     "@ant-design/icons": "^4.2.2",
