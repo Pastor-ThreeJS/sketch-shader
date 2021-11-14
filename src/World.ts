@@ -6,10 +6,6 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 export default class World {
     baseMeshGroup: any[] = [];
     baseMaterialGroup: any[] = [];
-    flowingLine: any;
-    geometryMaterial: any;
-    buildingSweepingLight: any;
-    fresnel: any;
     constructor() {
         //1.场景初始化
         var scene = new THREE.Scene();
@@ -110,69 +106,145 @@ export default class World {
     }
 
     Init() {
+
         {
-            //     let radar = new Radar();
-            //     radar.radius = 10;
-            //     radar.Init();
-            //     let mesh = radar.GetMesh();
-            //     mesh.position.set(0, 0, 0);
-            //     this.scene.add(mesh);
-            //     this.baseMaterialGroup.push(radar);
-            // }
-            // {
-            //     let wall = new Wall();
-            //     wall.Init();
-            //     let mesh = wall.GetMesh();
-            //     mesh.position.set(0, 1, 0);
-            //     this.scene.add(mesh);
-            //     this.baseMaterialGroup.push(wall);
-            // }
-            // {
-            //     let fly = new Fly();
-            //     fly.Init();
-            //     let mesh = fly.GetMesh();
-            //     mesh.position.set(0, 0, 0);
-            //     this.scene.add(mesh);
-            //     this.baseMaterialGroup.push(fly);
-            // }
+            let poins = [
+                new THREE.Vector3(0, 0, 10),
+                new THREE.Vector3(10, 0, 10),
+                new THREE.Vector3(10, 0, 0),
+                new THREE.Vector3(20, 0, -10)
+            ]
+            let texrtureUrl = "\\assets\\textures\\arrow.png";
+            let object = new FlowingLine();
+            object.Init({ points: poins, textureUrl: texrtureUrl, tubularSegments: 80, radius: 0.1, repeat: 40 });
+            this.scene.add(object.mesh);
+            this.baseMeshGroup.push(object);
+        }
 
-            // {
-            //     let object = new SurroundLine();
-            //     object.Init();
-            //     this.baseMaterialGroup.push(object);
-            //     let geometry = new THREE.BoxGeometry(20, 20, 20);
-            //     let mat = new THREE.MeshBasicMaterial();
-            //     let box = new THREE.Mesh(geometry, mat);
-            //     this.scene.add(box);
-            //     let mesh = object.GetMesh(box);
-            //     mesh.position.set(0, 0, 0);
-            //     this.scene.add(mesh);
-            // }
+        {
+            let object = new BuildingSweepingLight();
+            object.Init();
+            this.baseMaterialGroup.push(object);
+            for (let i = 0; i < 60; i++) {
+                const height = Math.random() * 10 + 2
+                const width = 3
+                const cubeGeom = new THREE.BoxBufferGeometry(width, height, width)
+                cubeGeom.setAttribute('color', new THREE.BufferAttribute(new Float32Array(24 * 3), 3))
+                const colors = cubeGeom.attributes.color
+                let r = Math.random() * 0.2,
+                    g = Math.random() * 0.1,
+                    b = Math.random() * 0.8
+                //设置立方体六个面24个顶点的颜色  
+                for (let i = 0; i < 24; i++) {
+                    colors.setXYZ(i, r, g, 0.6)
+                }
+                //重置立方体顶部四边形的四个顶点的颜色
+                const k = 2
+                colors.setXYZ(k * 4 + 0, .0, g, 1.0)
+                colors.setXYZ(k * 4 + 1, .0, g, 1.0)
+                colors.setXYZ(k * 4 + 2, .0, g, 1.0)
+                colors.setXYZ(k * 4 + 3, .0, g, 1.0)
+                const cube = new THREE.Mesh(cubeGeom, object.material)
+                cube.position.set(Math.random() * 100 - 50, height / 2, Math.random() * 100 - 50)
+                this.scene.add(cube)
 
-            // {
-            //     let object = new SurroundLine();
-            //     object.Init();
-            //     this.baseMaterialGroup.push(object);
-            //     let geometry = new THREE.BoxGeometry(20, 20, 20);
-            //     let mat = new THREE.MeshBasicMaterial();
-            //     let box = new THREE.Mesh(geometry, mat);
-            //     this.scene.add(box);
-            //     ShaderSourceUtils.Test(mat, new THREE.Color(0, 1, 0))
-            // }
-
-            {
-                let object = new SpriteOutline();
-                new THREE.TextureLoader().loadAsync("./assets/textures/arrow.png").then((texture: THREE.Texture) => {
-                    object.map = texture;
-                    object.Init();
-                    this.baseMaterialGroup.push(object);
-                    let mesh = object.GetMesh();
-                    mesh.scale.set(10, 10, 10)
-                    this.scene.add(mesh);
-                });
-
-
+                //绘制边框线
+                const lineGeom = new THREE.EdgesGeometry(cubeGeom)
+                const lineMaterial = new THREE.LineBasicMaterial({
+                    color: 0x018BF5,
+                    linewidth: 1,
+                    linecap: 'round',
+                    linejoin: 'round'
+                })
+                const line = new THREE.LineSegments(lineGeom, lineMaterial)
+                line.scale.copy(cube.scale)
+                line.rotation.copy(cube.rotation)
+                line.position.copy(cube.position)
+                this.scene.add(line)
             }
+        }
+
+        {
+            let object = new Fresnel();
+            object.Init();
+            this.baseMaterialGroup.push(object);
+            let geometry = new THREE.BoxGeometry(20, 20, 20);//盒子模型
+            let mesh = new THREE.Mesh(geometry, object.material);
+            this.scene.add(mesh);
+        }
+
+        {
+            let object = new GeometryMaterial();
+            object.Init();
+            this.baseMaterialGroup.push(object);
+            let geometry = new THREE.PlaneBufferGeometry(2, 2);
+            let mesh = new THREE.Mesh(geometry, object.material);
+            mesh.position.y = 0;
+            this.scene.add(mesh);
+        }
+
+        {
+            let object = new Radar();
+            object.radius = 10;
+            object.Init();
+            let mesh = object.GetMesh();
+            mesh.position.set(0, 0, 0);
+            this.scene.add(mesh);
+            this.baseMaterialGroup.push(object);
+        }
+        {
+            let object = new Wall();
+            object.Init();
+            let mesh = object.GetMesh();
+            mesh.position.set(0, 1, 0);
+            this.scene.add(mesh);
+            this.baseMaterialGroup.push(object);
+        }
+        {
+            let object = new Fly();
+            object.Init();
+            let mesh = object.GetMesh();
+            mesh.position.set(0, 0, 0);
+            this.scene.add(mesh);
+            this.baseMaterialGroup.push(object);
+        }
+
+        {
+            let object = new SurroundLine();
+            object.Init();
+            this.baseMaterialGroup.push(object);
+            let geometry = new THREE.BoxGeometry(20, 20, 20);
+            let mat = new THREE.MeshBasicMaterial();
+            let box = new THREE.Mesh(geometry, mat);
+            this.scene.add(box);
+            let mesh = object.GetMesh(box);
+            mesh.position.set(0, 0, 0);
+            this.scene.add(mesh);
+        }
+
+        {
+            let object = new SurroundLine();
+            object.Init();
+            this.baseMaterialGroup.push(object);
+            let geometry = new THREE.BoxGeometry(20, 20, 20);
+            let mat = new THREE.MeshBasicMaterial();
+            let box = new THREE.Mesh(geometry, mat);
+            this.scene.add(box);
+            ShaderSourceUtils.Test(mat, new THREE.Color(0, 1, 0))
+        }
+
+        {
+            let object = new SpriteOutline();
+            new THREE.TextureLoader().loadAsync("./assets/textures/arrow.png").then((texture: THREE.Texture) => {
+                object.map = texture;
+                object.Init();
+                this.baseMaterialGroup.push(object);
+                let mesh = object.GetMesh();
+                mesh.scale.set(10, 10, 10)
+                this.scene.add(mesh);
+            });
+
+
         }
     }
 }

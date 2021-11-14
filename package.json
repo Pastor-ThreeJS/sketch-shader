@@ -1,7 +1,7 @@
 {
-  "name": "sketch-pass-tooltiks",
-  "version": "0.0.4",
-  "repository": "git@github.com:Lustianshun/sketch-pass-tooltiks.git",
+  "name": "sketch-shader",
+  "version": "0.0.1",
+  "repository": "git@github.com:Pastor-ThreeJS/sketch-shader.git",
   "author": "lustianshun@gmail.com",
   "license": "ISC",
   "main": "dist/index.js",
