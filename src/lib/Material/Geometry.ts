@@ -9,7 +9,8 @@ export class GeometryMaterial extends BaseMaterial {
         this.material.uniforms.u_resolution.value.y = window.outerHeight;
     }
     Update() {
-        this.material.uniforms.u_time.value += 0.02;
+        if (this.material)
+            this.material.uniforms.u_time.value += 0.02;
     }
     Resize(): void {
         this.material.uniforms.u_resolution.value.x = window.outerWidth;

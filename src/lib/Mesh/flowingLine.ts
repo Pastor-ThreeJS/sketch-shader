@@ -23,7 +23,8 @@ export class FlowingLine extends BaseMesh {
         this.mesh = new THREE.Mesh(this._tubeGeometry, material);
     }
     Update() {
-        this._texture.offset.x -= 0.05;
+        if (this._texture)
+            this._texture.offset.x -= 0.05;
     }
     Destroyed(): void {
 

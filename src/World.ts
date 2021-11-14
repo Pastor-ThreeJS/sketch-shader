@@ -1,4 +1,4 @@
-import { BuildingSweepingLight, FlowingLine, Fresnel, GeometryMaterial, BaseMaterial, BaseMesh } from "./lib"
+import { BuildingSweepingLight, FlowingLine, Fresnel, GeometryMaterial, BaseMaterial, BaseMesh, Radar, Wall, Fly } from "./lib"
 import * as THREE from 'three';
 import Stats from './Stats';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
@@ -110,6 +110,31 @@ export default class World {
     }
 
     Init() {
-
+        {
+            //     let radar = new Radar();
+            //     radar.radius = 10;
+            //     radar.Init();
+            //     let mesh = radar.GetMesh();
+            //     mesh.position.set(0, 0, 0);
+            //     this.scene.add(mesh);
+            //     this.baseMaterialGroup.push(radar);
+            // }
+            // {
+            //     let wall = new Wall();
+            //     wall.Init();
+            //     let mesh = wall.GetMesh();
+            //     mesh.position.set(0, 1, 0);
+            //     this.scene.add(mesh);
+            //     this.baseMaterialGroup.push(wall);
+            // }
+            {
+                let fly = new Fly();
+                fly.Init();
+                let mesh = fly.GetMesh();
+                mesh.position.set(0, 0, 0);
+                this.scene.add(mesh);
+                this.baseMaterialGroup.push(fly);
+            }
+        }
     }
 }

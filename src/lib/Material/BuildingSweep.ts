@@ -11,13 +11,14 @@ export class BuildingSweepingLight extends BaseMaterial {
         this.material.needsUpdate = true
     }
     Update() {
-        this.material.uniforms.boxH.value += this.speed
-        if (this.material.uniforms.boxH.value > this.boxH) {
-            this.material.uniforms.boxH.value = -this.boxH
+        if (this.material) {
+            this.material.uniforms.boxH.value += this.speed
+            if (this.material.uniforms.boxH.value > this.boxH) {
+                this.material.uniforms.boxH.value = -this.boxH
+            }
         }
     }
     Resize(): void {
-
     }
     Destroyed(): void {
         if (this.material) {
