@@ -29,7 +29,6 @@ export class SurroundLine extends BaseMaterial {
         if (this.material) {
             this.material.uniforms.time.value = this.clock.getElapsedTime();
         }
-        console.log(this.material.uniforms)
     }
     Resize(): void {
 

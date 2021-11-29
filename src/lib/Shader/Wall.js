@@ -53,6 +53,5 @@ export default function (option) {
         vertexShader: vertexShader,
         fragmentShader: fragmentShader
     });
-    console.log(option)
     return material;
 }
