@@ -51,15 +51,9 @@
   },
   "scripts": {
     "dev": "react-scripts start",
-    "build": "react-scripts build",
-    "package": "gulp clean && tsc -d true -p ./src/lib/ && gulp upgrade_version && npm publish",
-    "gulp:clean": "gulp clean",
-    "gulp:build": "gulp build",
-    "gulp:latest": "gulp latest",
-    "gulp:upload": "gulp upload  && gulp clean",
-    "gulp:download": "gulp download && gulp clean",
-    "gulp:deploy": "gulp deploy",
-    "gulp:ci": "react-scripts build && gulp build && gulp deploy"
+    "build": "react-scripts build && node ./script/build.js",
+    "compile": "gulp clean && tsc -d true -p ./src/lib/ && gulp upgrade_version",
+    "package": "gulp clean && tsc -d true -p ./src/lib/ && gulp upgrade_version && npm publish"
   },
   "keywords": [
     "three.js"

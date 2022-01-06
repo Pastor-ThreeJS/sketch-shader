@@ -29,9 +29,9 @@ export default function (opts) {
   const material = new THREE.ShaderMaterial({
     uniforms:
     {
-      "s": { type: "f", value: -1.0 },
-      "b": { type: "f", value: 1.0 },
-      "p": { type: "f", value: 2.0 },
+      "s": { type: "f", value: opts.s },
+      "b": { type: "f", value: opts.b },
+      "p": { type: "f", value: opts.p },
       glowColor: { type: "c", value: opts.glowColor }
     },
     vertexShader: Shader.vertexShader,
