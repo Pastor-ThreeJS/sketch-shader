@@ -52,7 +52,7 @@
   "scripts": {
     "dev": "react-scripts start",
     "build": "react-scripts build && node ./script/build.js",
-    "compile": "gulp clean && tsc -d true -p ./src/lib/ && gulp upgrade_version",
+    "compile": "gulp clean && tsc -d true -p ./src/lib/",
     "package": "gulp clean && tsc -d true -p ./src/lib/ && gulp upgrade_version && npm publish"
   },
   "keywords": [
