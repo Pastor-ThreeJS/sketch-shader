@@ -1,4 +1,4 @@
-import { BuildingSweepingLight, FlowingLine, Fresnel, GeometryMaterial, BaseMaterial, BaseMesh, Radar, Wall, Fly, SurroundLine, ShaderSourceUtils, SpriteOutline } from "./lib"
+import { BuildingSweepingLight, FlowingLine, Fresnel, GeometryMaterial, BaseMaterial, BaseMesh, Radar, Wall, Fly, SurroundLine, ShaderSourceUtils, SpriteOutline, Magic } from "./lib"
 import * as THREE from 'three';
 import Stats from './Stats';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
@@ -243,8 +243,16 @@ export default class World {
         //         mesh.scale.set(10, 10, 10)
         //         this.scene.add(mesh);
         //     });
-
-
         // }
+
+        {
+            let object = new Magic();
+            object.Init();
+            this.baseMaterialGroup.push(object);
+            let geometry = new THREE.BoxGeometry(20, 20, 20);
+            let box = new THREE.Mesh(geometry, object.material);
+            this.scene.add(box);
+        }
     }
+
 }

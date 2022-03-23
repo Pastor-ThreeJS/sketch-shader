@@ -12,6 +12,7 @@ export { Wall } from "./Material/Wall"
 export { Fly } from "./Material/Fly"
 export { SurroundLine } from "./Material/SurroundLine"
 export { SpriteOutline } from "./Material/SpriteOutline"
+export { Magic } from "./Material/Magic"
 
 //Mesh
 export { FlowingLine } from "./Mesh/FlowingLine"
