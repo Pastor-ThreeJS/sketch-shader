@@ -61,7 +61,7 @@ export class AreaFenceBufferGeometry {
         uvs[1 * 2 + 0] = 1
         uvs[1 * 2 + 1] = 0
 
-        uvs[2 * 2 + 0] = 2
+        uvs[2 * 2 + 0] = _height / _width
         uvs[2 * 2 + 1] = 0
 
         uvs[3 * 2 + 0] = 1
