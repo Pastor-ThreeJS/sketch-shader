@@ -14,5 +14,9 @@ export { SurroundLine } from "./Material/SurroundLine"
 export { SpriteOutline } from "./Material/SpriteOutline"
 export { Magic } from "./Material/Magic"
 
+//BufferGeometry
+export { AreaFloorBorderBufferGeometry } from "./BufferGeometry/AreaFloorBorderBufferGeometry"
+export { AreaFenceBufferGeometry } from "./BufferGeometry/AreaFenceBufferGeometry"
+
 //Mesh
 export { FlowingLine } from "./Mesh/FlowingLine"

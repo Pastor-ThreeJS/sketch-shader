@@ -1,4 +1,4 @@
-import { BuildingSweepingLight, FlowingLine, Fresnel, GeometryMaterial, BaseMaterial, BaseMesh, Radar, Wall, Fly, SurroundLine, ShaderSourceUtils, SpriteOutline, Magic } from "./lib"
+import { BuildingSweepingLight, FlowingLine, Fresnel, GeometryMaterial, BaseMaterial, BaseMesh, Radar, Wall, Fly, SurroundLine, ShaderSourceUtils, SpriteOutline, Magic, AreaFenceBufferGeometry, AreaFloorBorderBufferGeometry } from "./lib"
 import * as THREE from 'three';
 import Stats from './Stats';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
@@ -102,6 +102,10 @@ export default class World {
         this.baseMaterialGroup.forEach((material) => {
             material.Update();
         });
+        if (this.texture) {
+            this.texture.offset.x -= 0.001;
+            console.log(this.texture.offset.y)
+        }
         requestAnimationFrame(this.Update.bind(this));
     }
 
@@ -164,14 +168,14 @@ export default class World {
         //     }
         // }
 
-        {
-            let object = new Fresnel();
-            object.Init();
-            this.baseMaterialGroup.push(object);
-            let geometry = new THREE.BoxGeometry(20, 20, 20);//盒子模型
-            let mesh = new THREE.Mesh(geometry, object.material);
-            this.scene.add(mesh);
-        }
+        // {
+        //     let object = new Fresnel();
+        //     object.Init();
+        //     this.baseMaterialGroup.push(object);
+        //     let geometry = new THREE.BoxGeometry(20, 20, 20);//盒子模型
+        //     let mesh = new THREE.Mesh(geometry, object.material);
+        //     this.scene.add(mesh);
+        // }
 
         // {
         //     let object = new GeometryMaterial();
@@ -245,14 +249,44 @@ export default class World {
         //     });
         // }
 
+        // {
+        //     let object = new Magic();
+        //     object.Init();
+        //     this.baseMaterialGroup.push(object);
+        //     let geometry = new THREE.BoxGeometry(20, 20, 20);
+        //     let box = new THREE.Mesh(geometry, object.material);
+        //     this.scene.add(box);
+        // }
+
         {
-            let object = new Magic();
-            object.Init();
-            this.baseMaterialGroup.push(object);
-            let geometry = new THREE.BoxGeometry(20, 20, 20);
-            let box = new THREE.Mesh(geometry, object.material);
-            this.scene.add(box);
+            //
+            let texture: THREE.Texture = new THREE.TextureLoader().load('./assets/textures/arrow.png');
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+            this.texture = texture;
+
+            let material = new THREE.MeshBasicMaterial({
+                map: texture,
+                side: THREE.DoubleSide,
+                transparent: false,
+            });
+            let areaFence = new AreaFenceBufferGeometry(10, 6, 1);
+            let mesh = new THREE.Mesh(areaFence.geometry, material);
+            mesh.rotateX(Math.PI / 2);
+            this.scene.add(mesh);
         }
+
+        // {
+        //     let material = new THREE.MeshBasicMaterial({
+        //         color: new THREE.Color(1, 0, 0),
+        //         side: THREE.DoubleSide,
+        //         transparent: true
+        //     });
+        //     let areaFloor = new AreaFloorBorderBufferGeometry(1, 2, 0.2);
+        //     let mesh = new THREE.Mesh(areaFloor.geometry, material);
+        //     this.scene.add(mesh);
+        // }
     }
+    texture: any;
 
 }
