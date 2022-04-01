@@ -1,7 +1,8 @@
-import { BuildingSweepingLight, FlowingLine, Fresnel, GeometryMaterial, BaseMaterial, BaseMesh, Radar, Wall, Fly, SurroundLine, ShaderSourceUtils, SpriteOutline, Magic, AreaFenceBufferGeometry, AreaFloorBorderBufferGeometry } from "./lib"
+import { BuildingSweepingLight, FlowingLine, Fresnel, GeometryMaterial, BaseMaterial, BaseMesh, Radar, Wall, Fly, SurroundLine, ShaderSourceUtils, SpriteOutline, Magic, AreaFenceBufferGeometry, AreaFloorBorderBufferGeometry, Fly2 } from "./lib"
 import * as THREE from 'three';
 import Stats from './Stats';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { MeshBasicMaterial } from "three";
 
 export default class World {
     baseMeshGroup: any[] = [];
@@ -204,14 +205,23 @@ export default class World {
         //     this.scene.add(mesh);
         //     this.baseMaterialGroup.push(object);
         // }
-        // {
-        //     let object = new Fly();
-        //     object.Init();
-        //     let mesh = object.GetMesh();
-        //     mesh.position.set(0, 0, 0);
-        //     this.scene.add(mesh);
-        //     this.baseMaterialGroup.push(object);
-        // }
+        {
+            let object = new Fly();
+            object.Init();
+            let mesh = object.GetMesh();
+            mesh.position.set(0, 0, 0);
+            this.scene.add(mesh);
+            this.baseMaterialGroup.push(object);
+        }
+
+        {
+
+            let object = new Fly2();
+            object.Init();
+            let mesh = object.GetMesh();
+            this.scene.add(mesh);
+            this.baseMaterialGroup.push(object);
+        }
 
         // {
         //     let object = new SurroundLine();
@@ -258,23 +268,23 @@ export default class World {
         //     this.scene.add(box);
         // }
 
-        {
-            //
-            let texture: THREE.Texture = new THREE.TextureLoader().load('./assets/textures/arrow.png');
-            texture.wrapS = THREE.RepeatWrapping;
-            texture.wrapT = THREE.RepeatWrapping;
-            this.texture = texture;
+        // {
+        //     //
+        //     let texture: THREE.Texture = new THREE.TextureLoader().load('./assets/textures/arrow.png');
+        //     texture.wrapS = THREE.RepeatWrapping;
+        //     texture.wrapT = THREE.RepeatWrapping;
+        //     this.texture = texture;
 
-            let material = new THREE.MeshBasicMaterial({
-                map: texture,
-                side: THREE.DoubleSide,
-                transparent: false,
-            });
-            let areaFence = new AreaFenceBufferGeometry(10, 6, 1);
-            let mesh = new THREE.Mesh(areaFence.geometry, material);
-            mesh.rotateX(Math.PI / 2);
-            this.scene.add(mesh);
-        }
+        //     let material = new THREE.MeshBasicMaterial({
+        //         map: texture,
+        //         side: THREE.DoubleSide,
+        //         transparent: false,
+        //     });
+        //     let areaFence = new AreaFenceBufferGeometry(10, 6, 1);
+        //     let mesh = new THREE.Mesh(areaFence.geometry, material);
+        //     mesh.rotateX(Math.PI / 2);
+        //     this.scene.add(mesh);
+        // }
 
         // {
         //     let material = new THREE.MeshBasicMaterial({
@@ -286,6 +296,8 @@ export default class World {
         //     let mesh = new THREE.Mesh(areaFloor.geometry, material);
         //     this.scene.add(mesh);
         // }
+
+
     }
     texture: any;
 

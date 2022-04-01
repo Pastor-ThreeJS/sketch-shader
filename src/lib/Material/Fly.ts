@@ -4,28 +4,29 @@ import BaseMaterial from "../BaseMaterial"
 
 export class Fly extends BaseMaterial {
     source: { x: number, y: number, z: number } = {
-        x: -100,
-        y: 20,
-        z: -100,
+        x: 0,
+        y: 0,
+        z: 0,
     }
     target: { x: number, y: number, z: number } = {
-        x: 0,
-        y: 20,
+        x: -10,
+        y: 4,
         z: 0
     }
-    range: number = 200;
-    height: number = 80;
-    color: string = "#efad35";
-    size: number = 3;
-    number: number = 300;
-    speed: number = 0.2;
 
+    height: number = 8;
+    color: string = "#efad35";
+    range: number = 0.5;
+    number: number = 100;
+    cell: number = 50;
+    size: number = 0.5;
+    speed: number = 0.3;
     Init(): void {
         this.material = ShaderMaterial({
             color: this.color,
-            range: this.range,
+            range: this.range * this.number* this.cell/4,
             size: this.size,
-            number: this.number,
+            number: this.number* this.cell,
             speed: this.speed,
         });
         this.clock = new THREE.Clock();
@@ -58,7 +59,7 @@ export class Fly extends BaseMaterial {
             _center,
             _target
         );
-        let points = curve.getPoints(number);
+        let points = curve.getPoints(number * this.cell);
         // 粒子位置计算 
         points.forEach((elem, i) => {
             const index = i / (number - 1);
